@@ -1,0 +1,76 @@
+GIT CHEATSHEET - Toan Le - EiE nRF52840
+Started Lesson 2, Oct 2026. Add to this as the program goes on.
+
+
+git commit
+    Saves everything currently staged as a new commit on the current branch.
+    Only staged (green) changes go in. Unstaged (red) ones are left behind.
+    -m "message"    write the message inline
+    (no arguments)  opens VS Code to write a longer message
+
+git branch
+    (no arguments)  lists all local branches; * marks the one you're on
+    <name>          creates a new branch at the current commit, but does
+                    NOT switch to it
+    -d <name>       deletes a branch (-D forces it)
+    Behaviour changes with argument count: bare = list, with a name = create.
+
+git checkout
+    <branch>        switches to that branch; HEAD now points at it
+    <commit>        goes to a specific commit without a branch = detached
+                    HEAD. Commits made here belong to no branch.
+    -b <name>       creates a branch and switches to it in one step
+                    (same as git branch <name> + git checkout <name>)
+    -- <file>       throws away uncommitted changes to that file.
+                    Not recoverable. Careful.
+    Newer Git splits these jobs into git switch (branches) and
+    git restore (files). Clearer, and worth using instead.
+
+git fetch
+    Downloads commits from a remote and updates the remote-tracking
+    refs (origin/main, upstream/main). Does NOT touch my working files
+    or my branch. Always safe to run.
+    <remote> <branch>   fetch just that branch, e.g. git fetch upstream main
+
+git pull
+    fetch + merge in one step. Downloads AND merges into the current branch,
+    so my files do change. This is the one that can cause conflicts.
+    (no arguments)      uses the branch's tracked remote branch
+    <remote> <branch>   e.g. git pull upstream main
+    --rebase            replays my commits on top of the remote's instead
+                        of making a merge commit. Use when my branch and
+                        the remote have both moved.
+
+git push
+    Sends my local commits up to a remote. Opposite direction to pull.
+    (no arguments)      uses the branch's tracked remote branch
+    <remote> <branch>   e.g. git push origin main
+    -u <remote> <branch>  same, but also records the link so plain
+                          git push works from then on. Needed the first
+                          time a new branch goes to GitHub.
+
+git merge <branch>
+    Joins another branch into the current one. If both have moved, Git
+    makes a new commit with TWO parents. Both histories stay visible.
+    Nothing is rewritten, so this is the safe option.
+
+git rebase <branch>
+    Takes my commits and replays them on top of <branch> as brand new
+    commits (C3 becomes C3'). The originals are abandoned. History ends
+    up linear with no merge commit.
+    The new commits have different hashes, so NEVER rebase commits that
+    someone else has already pulled.
+
+
+MY REMOTES
+    origin    git@github.com:toanle01/eie_nrf52840.git   my fork, read+write
+    upstream  https://github.com/eiefirmware/...         EiE's repo, read only
+
+MY WORKFLOW EACH LESSON
+    git checkout main
+    git pull upstream main      get EiE's new material
+    git push origin main        mirror it to my fork
+    git switch -c lessonN       one branch per lesson
+    ...work, commit at milestones...
+    git push -u origin lessonN  first push; plain git push after that
+    Never commit on main - it stays an exact mirror of EiE.
