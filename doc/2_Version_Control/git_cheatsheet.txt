@@ -61,6 +61,33 @@ git rebase <branch>
     The new commits have different hashes, so NEVER rebase commits that
     someone else has already pulled.
 
+git add <file>
+    Moves changes from the working folder into the staging area, which is
+    the draft of the next commit. Nothing is saved to history yet.
+    <file>      stage just that file (name files explicitly)
+    .           stage everything changed. Convenient but can sweep in
+                files I didn't mean to commit.
+
+git status
+    Shows where every change sits right now:
+    red = changed but not staged, green = staged for the next commit,
+    "Untracked" = new file Git isn't watching yet.
+    Run it before and after every add, commit and push.
+
+git log
+    Shows commit history, newest first. HEAD -> shows where I am.
+    --oneline       one line per commit
+    --graph --all   draws the branch tree for every branch
+    -5              only the last 5 commits
+    Opens a pager: press q to get back to the prompt.
+
+git diff
+    Shows line-by-line what changed. + is added, - is removed.
+    (no arguments)  working folder vs staging area. Prints NOTHING once
+                    everything has been staged with git add.
+    --staged        staging area vs last commit. This is what the next
+                    commit will contain.
+
 
 MY REMOTES
     origin    git@github.com:toanle01/eie_nrf52840.git   my fork, read+write
